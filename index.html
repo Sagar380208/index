@@ -1,1640 +1,802 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sagar Sharma | Brand Strategist & Growth Marketer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0a0a0a;
-            --secondary: #1a1a1a;
-            --accent: #e63946;
-            --accent-light: #ff6b6b;
-            --text: #fafafa;
-            --text-muted: #a0a0a0;
-            --text-dark: #666;
-            --bg-dark: #050505;
-            --bg-card: #111111;
-            --bg-card-hover: #1a1a1a;
-            --gradient-1: linear-gradient(135deg, #e63946 0%, #ff6b6b 50%, #ffd93d 100%);
-            --gradient-2: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            --border: rgba(255,255,255,0.08);
-            --border-light: rgba(255,255,255,0.15);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* Noise texture overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        /* Custom cursor */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease, opacity 0.15s ease;
-            transform: translate(-50%, -50%);
-        }
-
-        .cursor-dot {
-            width: 4px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 1.5rem 4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(5,5,5,0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            background: var(--accent);
-            color: var(--text);
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-
-        .nav-cta:hover {
-            background: var(--accent-light);
-            transform: translateY(-2px);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 8rem 4rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            right: -20%;
-            width: 80%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, rgba(230,57,70,0.08) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(230,57,70,0.1);
-            border: 1px solid rgba(230,57,70,0.3);
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--accent);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 2rem;
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
-        .hero-tag::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s ease infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 600;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
-            animation: fadeInUp 0.8s ease 0.1s forwards;
-            opacity: 0;
-        }
-
-        .hero h1 .highlight {
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.4rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 2.5rem;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
-            opacity: 0;
-        }
-
-        .hero-subtitle strong {
-            color: var(--text);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Metrics Bar */
-        .metrics-bar {
-            display: flex;
-            gap: 3rem;
-            padding: 2rem 0;
-            border-top: 1px solid var(--border);
-            margin-top: 2rem;
-            animation: fadeInUp 0.8s ease 0.3s forwards;
-            opacity: 0;
-        }
-
-        .metric {
-            text-align: left;
-        }
-
-        .metric-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .metric-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* Scroll indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            animation: fadeInUp 0.8s ease 0.5s forwards;
-            opacity: 0;
-        }
-
-        .scroll-indicator::after {
-            content: '';
-            width: 1px;
-            height: 60px;
-            background: linear-gradient(to bottom, var(--accent), transparent);
-            animation: scrollLine 2s ease infinite;
-        }
-
-        @keyframes scrollLine {
-            0% { transform: scaleY(0); transform-origin: top; }
-            50% { transform: scaleY(1); transform-origin: top; }
-            51% { transform-origin: bottom; }
-            100% { transform: scaleY(0); transform-origin: bottom; }
-        }
-
-        /* Section Styles */
-        section {
-            padding: 8rem 4rem;
-            position: relative;
-        }
-
-        .section-header {
-            margin-bottom: 4rem;
-        }
-
-        .section-tag {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            margin-bottom: 1rem;
-        }
-
-        .section-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 600px;
-        }
-
-        /* About Section */
-        #about {
-            background: var(--primary);
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: start;
-        }
-
-        .about-content p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        .about-content p strong {
-            color: var(--text);
-        }
-
-        .about-content .highlight-text {
-            font-size: 1.3rem;
-            color: var(--text);
-            font-style: italic;
-            border-left: 3px solid var(--accent);
-            padding-left: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .skill-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .skill-card:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-light);
-            transform: translateY(-5px);
-        }
-
-        .skill-card h4 {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .skill-card ul {
-            list-style: none;
-        }
-
-        .skill-card li {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            padding: 0.4rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .skill-card li:last-child {
-            border-bottom: none;
-        }
-
-        /* Case Studies Section */
-        #work {
-            background: var(--bg-dark);
-        }
-
-        .case-studies {
-            display: flex;
-            flex-direction: column;
-            gap: 8rem;
-        }
-
-        .case-study {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 4rem;
-            align-items: start;
-            padding: 4rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .case-study::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--gradient-1);
-        }
-
-        .case-study:hover {
-            border-color: var(--border-light);
-            transform: translateY(-10px);
-        }
-
-        .case-study-number {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--accent);
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-        }
-
-        .case-study h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .case-study-brand {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        .case-study-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .case-study-tag {
-            padding: 0.4rem 0.8rem;
-            background: rgba(230,57,70,0.1);
-            border: 1px solid rgba(230,57,70,0.2);
-            border-radius: 50px;
-            font-size: 0.75rem;
-            color: var(--accent);
-        }
-
-        .case-study-desc {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-
-        .case-study-metrics {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .case-metric {
-            padding: 1.5rem;
-            background: rgba(255,255,255,0.02);
-            border-radius: 10px;
-            border: 1px solid var(--border);
-        }
-
-        .case-metric-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 0.3rem;
-        }
-
-        .case-metric-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .case-study-details {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .case-detail-section h4 {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--accent);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .case-detail-section h4::before {
-            content: '';
-            width: 20px;
-            height: 2px;
-            background: var(--accent);
-        }
-
-        .case-detail-section p {
-            color: var(--text-muted);
-            line-height: 1.8;
-        }
-
-        .case-detail-section ul {
-            list-style: none;
-        }
-
-        .case-detail-section li {
-            color: var(--text-muted);
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .case-detail-section li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-
-        .case-insight {
-            background: linear-gradient(135deg, rgba(230,57,70,0.1) 0%, rgba(255,107,107,0.05) 100%);
-            border-left: 3px solid var(--accent);
-            padding: 1.5rem;
-            border-radius: 0 10px 10px 0;
-            margin-top: 1rem;
-        }
-
-        .case-insight p {
-            font-style: italic;
-            color: var(--text);
-        }
-
-        /* Experience Section */
-        #experience {
-            background: var(--primary);
-        }
-
-        .timeline {
-            position: relative;
-            max-width: 900px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--accent), var(--border));
-        }
-
-        .timeline-item {
-            padding-left: 3rem;
-            padding-bottom: 3rem;
-            position: relative;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -5px;
-            top: 0;
-            width: 12px;
-            height: 12px;
-            background: var(--accent);
-            border-radius: 50%;
-            border: 3px solid var(--bg-dark);
-        }
-
-        .timeline-date {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-item h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .timeline-company {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .timeline-item ul {
-            list-style: none;
-        }
-
-        .timeline-item li {
-            color: var(--text-muted);
-            padding: 0.3rem 0;
-            font-size: 0.95rem;
-        }
-
-        .timeline-item li strong {
-            color: var(--text);
-        }
-
-        /* Education & Certifications */
-        .edu-cert-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            margin-top: 4rem;
-        }
-
-        .edu-card, .cert-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-        }
-
-        .edu-card h4, .cert-card h4 {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-        }
-
-        .cert-list {
-            list-style: none;
-        }
-
-        .cert-list li {
-            padding: 0.8rem 0;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .cert-list li:last-child {
-            border-bottom: none;
-        }
-
-        .cert-list .cert-org {
-            font-size: 0.8rem;
-            color: var(--text-dark);
-        }
-
-        /* Contact Section */
-        #contact {
-            background: var(--bg-dark);
-            text-align: center;
-        }
-
-        .contact-content {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .contact-content .section-title {
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-bottom: 4rem;
-        }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        .contact-link:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        .contact-link svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--accent);
-        }
-
-        .contact-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1.25rem 2.5rem;
-            background: var(--accent);
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            letter-spacing: 0.05em;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-
-        .contact-cta:hover {
-            background: var(--accent-light);
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(230,57,70,0.3);
-        }
-
-        /* Footer */
-        footer {
-            padding: 2rem 4rem;
-            background: var(--primary);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        footer p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        footer .quote {
-            font-style: italic;
-            color: var(--text-dark);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            nav {
-                padding: 1rem 2rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            section {
-                padding: 4rem 2rem;
-            }
-
-            .hero {
-                padding: 6rem 2rem 4rem;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .case-study {
-                grid-template-columns: 1fr;
-                padding: 2rem;
-            }
-
-            .edu-cert-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .metrics-bar {
-                flex-wrap: wrap;
-                gap: 2rem;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .case-study-metrics {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-links {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        /* Animations on scroll */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s ease;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Mobile menu */
-        .mobile-menu-btn {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .mobile-menu-btn span {
-            width: 25px;
-            height: 2px;
-            background: var(--text);
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 1024px) {
-            .mobile-menu-btn {
-                display: flex;
-            }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sagar Sharma &middot; Strategy &amp; Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#f8f5f0;--black:#131210;--ink:#1e1d1a;--muted:#8a8780;--border:#ddd9d0;--accent:#2b5be0;--accent-light:#eef1fd;--green:#1a6b4a;--green-light:#e8f5ee;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Syne',sans-serif;font-size:16px;line-height:1.6;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--ink);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;background:var(--accent);color:#fff;text-decoration:none;padding:.6rem 1.4rem;border-radius:2px;transition:opacity .2s;}
+.nav-cta:hover{opacity:.85;}
+.hero{padding:10rem 3rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end;min-height:100vh;border-bottom:1px solid var(--border);}
+.hero-eyebrow{display:flex;align-items:center;gap:.75rem;margin-bottom:2rem;}
+.eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);}
+.eyebrow-text{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted);}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,6vw,6.5rem);line-height:1.02;font-weight:700;margin-bottom:2rem;}
+.hero-title em{font-style:italic;color:var(--accent);}
+.hero-sub{font-size:1rem;color:var(--muted);line-height:1.9;max-width:480px;margin-bottom:3rem;}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-primary{background:var(--ink);color:var(--bg);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.85rem 2rem;text-decoration:none;border-radius:2px;transition:background .2s;}
+.btn-primary:hover{background:var(--accent);}
+.btn-ghost{border:1px solid var(--border);color:var(--muted);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.85rem 2rem;text-decoration:none;border-radius:2px;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink);}
+.hero-right{padding-bottom:1rem;}
+.hero-metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem;}
+.metric{background:var(--bg);padding:1.8rem;transition:background .3s;}
+.metric:hover{background:var(--accent-light);}
+.metric-num{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--ink);line-height:1;}
+.metric-label{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;font-weight:600;}
+.hero-edu{border-left:3px solid var(--accent);padding-left:1.5rem;}
+.hero-edu-label{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:.4rem;}
+.hero-edu-name{font-family:'Playfair Display',serif;font-size:1.1rem;}
+.hero-edu-sub{font-size:.78rem;color:var(--muted);margin-top:.2rem;}
+.strip{background:var(--ink);color:var(--bg);overflow:hidden;padding:.9rem 0;}
+.strip-inner{display:flex;animation:marquee 22s linear infinite;white-space:nowrap;}
+.strip-item{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;font-weight:700;padding:0 2.5rem;border-right:1px solid rgba(255,255,255,.15);}
+.strip-item.hi{color:#c8a96e;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+section{padding:6rem 3rem;}
+.s-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:1rem;font-family:'IBM Plex Mono',monospace;}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:700;line-height:1.1;margin-bottom:4rem;}
+.projects-hint{font-size:.8rem;color:var(--muted);margin-bottom:2.5rem;line-height:1.75;max-width:520px;border-left:3px solid var(--accent);padding-left:1rem;}
+
+/* ---- PROJECT GRID ---- */
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.project-card{background:var(--bg);padding:2.5rem;cursor:pointer;border-top:3px solid transparent;position:relative;transition:background .22s,border-top-color .22s;}
+.project-card:hover{background:#fff;border-top-color:var(--accent);}
+.project-card.active{background:#fff;border-top-color:var(--accent);}
+.project-card .card-indicator{position:absolute;right:1.6rem;bottom:1.5rem;font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--border);transition:color .22s;}
+.project-card:hover .card-indicator{color:var(--accent);}
+.project-card.active .card-indicator{color:var(--accent);}
+.proj-num{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted);margin-bottom:1rem;font-weight:300;}
+.proj-name{font-family:'Playfair Display',serif;font-size:1.25rem;line-height:1.3;margin-bottom:.8rem;font-weight:700;}
+.proj-desc{font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:1.2rem;}
+.proj-tags{display:flex;gap:.3rem;flex-wrap:wrap;}
+.proj-tag{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.25rem .6rem;border-radius:2px;}
+.proj-tag.blue{background:var(--accent-light);color:var(--accent);}
+.proj-tag.green{background:var(--green-light);color:var(--green);}
+.proj-tag.neutral{background:#f0ede6;color:var(--muted);}
+
+/* ---- DETAIL PANEL ---- */
+.project-detail{display:none;grid-column:1/-1;background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);animation:slideDown .3s ease;}
+.project-detail.open{display:block;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.detail-banner{position:relative;height:190px;overflow:hidden;display:flex;align-items:flex-end;}
+.detail-banner-bg{position:absolute;inset:0;}
+.detail-banner-content{position:relative;padding:1.8rem 2.5rem;width:100%;}
+.detail-banner-num{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.35rem;}
+.detail-banner-title{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:700;color:#fff;line-height:1.15;margin-bottom:.3rem;}
+.detail-banner-sub{font-size:.76rem;color:rgba(255,255,255,.68);max-width:580px;line-height:1.55;}
+.detail-cols{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--border);}
+.detail-col{padding:2rem 2.5rem;border-right:1px solid var(--border);}
+.detail-col:last-child{border-right:none;}
+.col-head{display:flex;align-items:center;gap:.5rem;font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:.85rem;}
+.col-dot{width:7px;height:7px;border-radius:50%;}
+.col-ctx .col-head{color:#9a7030;} .col-ctx .col-dot{background:#c8a96e;}
+.col-act .col-head{color:var(--accent);} .col-act .col-dot{background:var(--accent);}
+.col-out .col-head{color:var(--green);} .col-out .col-dot{background:var(--green);}
+.col-headline{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;line-height:1.25;margin-bottom:.7rem;color:var(--ink);}
+.col-body{font-size:.79rem;color:var(--muted);line-height:1.78;}
+.col-body ul{list-style:none;margin-top:.6rem;display:flex;flex-direction:column;gap:.42rem;}
+.col-body ul li{padding-left:1rem;position:relative;}
+.col-body ul li::before{content:'--';position:absolute;left:0;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--border);}
+.out-pills{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.75rem;}
+.pill{font-size:.63rem;font-weight:700;letter-spacing:.04em;padding:.28rem .65rem;border-radius:2px;}
+.pill-blue{background:var(--accent-light);color:var(--accent);}
+.pill-green{background:var(--green-light);color:var(--green);}
+.pill-gold{background:#fef3e2;color:#b45309;}
+.detail-footer{padding:.6rem 2.5rem 1.6rem;display:flex;justify-content:flex-start;}
+.btn-collapse{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Syne',sans-serif;font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.5rem 1.1rem;border-radius:2px;cursor:pointer;transition:all .2s;}
+.btn-collapse:hover{border-color:var(--ink);color:var(--ink);}
+
+/* ---- REST OF SITE ---- */
+.feature-strip{background:var(--ink);color:var(--bg);padding:5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.feature-strip .s-label{color:#c8a96e;}
+.feature-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;line-height:1.15;}
+.feature-title em{font-style:italic;color:#c8a96e;}
+.feature-list{display:flex;flex-direction:column;gap:1.5rem;}
+.feature-item{display:flex;gap:1.5rem;align-items:flex-start;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,.08);}
+.feature-item:last-child{border-bottom:none;}
+.fi-num{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:#c8a96e;min-width:2rem;margin-top:.2rem;font-weight:300;}
+.fi-text{font-size:.9rem;line-height:1.7;color:rgba(255,255,255,.7);}
+.fi-text strong{color:#fff;font-weight:600;}
+.exp-list{display:flex;flex-direction:column;}
+.exp-row{display:grid;grid-template-columns:260px 1fr;gap:3rem;padding:3rem 0;border-top:1px solid var(--border);}
+.exp-row:last-child{border-bottom:1px solid var(--border);}
+.exp-badge{display:inline-block;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.3rem .7rem;margin-bottom:1rem;border-radius:2px;}
+.badge-edtech{background:#fef3e2;color:#b45309;}
+.badge-re{background:var(--green-light);color:var(--green);}
+.exp-co{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:.2rem;}
+.exp-role{font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.05em;margin-bottom:.2rem;}
+.exp-dates{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);font-weight:300;}
+.exp-headline{font-size:1rem;font-weight:600;margin-bottom:.8rem;color:var(--ink);}
+.exp-points{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.exp-points li{font-size:.82rem;color:var(--muted);padding-left:1rem;position:relative;line-height:1.65;}
+.exp-points li::before{content:'--';position:absolute;left:0;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--border);}
+.skills-section{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.skills-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
+.skill-col{background:#fff;padding:2.5rem;}
+.skill-col-title{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:1.2rem;font-family:'IBM Plex Mono',monospace;}
+.skill-items{display:flex;flex-direction:column;gap:.5rem;}
+.skill-item{font-size:.82rem;color:var(--ink);padding:.3rem 0;border-bottom:1px solid var(--border);}
+.skill-item:last-child{border-bottom:none;}
+.awards-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--border);}
+.award-item{background:var(--bg);padding:2.5rem;border-right:1px solid var(--border);}
+.award-item:last-child{border-right:none;}
+.aw-year{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);margin-bottom:.8rem;font-weight:300;}
+.aw-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:.3rem;}
+.aw-event{font-size:.75rem;color:var(--muted);}
+.cta-section{background:var(--accent);color:#fff;padding:7rem 3rem;text-align:center;}
+.cta-section .s-label{color:rgba(255,255,255,.6);}
+.cta-big{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,7rem);font-weight:700;line-height:1;margin-bottom:2rem;}
+.cta-big em{font-style:italic;}
+.cta-sub{font-size:.95rem;color:rgba(255,255,255,.75);margin-bottom:3rem;}
+.cta-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;}
+.cta-a{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.85rem 2rem;text-decoration:none;border-radius:2px;transition:all .2s;}
+.cta-white{background:#fff;color:var(--accent);}
+.cta-white:hover{background:var(--ink);color:#fff;}
+.cta-outline{border:1px solid rgba(255,255,255,.4);color:#fff;}
+.cta-outline:hover{background:rgba(255,255,255,.1);}
+footer{background:var(--ink);color:rgba(255,255,255,.5);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;}
+.f-logo{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:rgba(255,255,255,.8);}
+.f-links{display:flex;gap:2rem;}
+.f-links a{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:#fff;}
+.f-copy{font-family:'IBM Plex Mono',monospace;font-size:.6rem;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.on{opacity:1;transform:translateY(0);}
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;} .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;padding:8rem 1.5rem 3rem;}
+  section{padding:4rem 1.5rem;}
+  .projects-grid{grid-template-columns:1fr;}
+  .detail-cols{grid-template-columns:1fr;}
+  .detail-col{border-right:none;border-bottom:1px solid var(--border);}
+  .detail-col:last-child{border-bottom:none;}
+  .feature-strip{grid-template-columns:1fr;gap:3rem;padding:4rem 1.5rem;}
+  .exp-row{grid-template-columns:1fr;gap:1rem;}
+  .skills-wrap{grid-template-columns:1fr 1fr;}
+  .awards-bar{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:1rem;text-align:center;}
+  .hero-metrics{grid-template-columns:1fr 1fr;}
+}
+</style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-dot"></div>
 
-    <!-- Navigation -->
-    <nav>
-        <a href="#" class="logo">Sagar<span>.</span></a>
-        <ul class="nav-links">
-            <li><a href="#about">Story</a></li>
-            <li><a href="#work">Work</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#contact">Contact</a></li>
+<nav>
+  <a href="#" class="nav-logo">Sagar Sharma</a>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#about">About</a>
+  </div>
+  <a href="mailto:sagar380208@gmail.com" class="nav-cta">Get in touch</a>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-eyebrow"><div class="eyebrow-dot"></div><span class="eyebrow-text">MBA Candidate &middot; IMT Nagpur &middot; 2024&ndash;26</span></div>
+    <h1 class="hero-title">Strategy that<br><em>moves</em> brands<br>forward.</h1>
+    <p class="hero-sub">I diagnose complex business problems and build growth strategies grounded in data, consumer insight, and financial rigor &mdash; across FMCG, D2C, real estate, and tech.</p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="https://www.linkedin.com/in/sagar0sharma/" class="btn-ghost" target="_blank">LinkedIn &rarr;</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-metrics">
+      <div class="metric"><div class="metric-num">16+</div><div class="metric-label">Strategy Projects</div></div>
+      <div class="metric"><div class="metric-num">40%</div><div class="metric-label">Engagement Lift</div></div>
+      <div class="metric"><div class="metric-num">105%</div><div class="metric-label">Brand Reach &uarr;</div></div>
+      <div class="metric"><div class="metric-num">95%</div><div class="metric-label">Stakeholder Alignment</div></div>
+    </div>
+    <div class="hero-edu">
+      <div class="hero-edu-label">Education</div>
+      <div class="hero-edu-name">Post Graduate Diploma in Management</div>
+      <div class="hero-edu-sub">Marketing &amp; Strategy &middot; IMT Nagpur &middot; CGPA 6.93/10</div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item hi">Growth Strategy</span><span class="strip-item">GTM Design</span><span class="strip-item hi">Brand Repositioning</span><span class="strip-item">Market Entry</span><span class="strip-item hi">Financial Modeling</span><span class="strip-item">Consumer Funnel Analysis</span><span class="strip-item hi">Portfolio Strategy</span><span class="strip-item">Competitive Intelligence</span>
+    <span class="strip-item hi">Growth Strategy</span><span class="strip-item">GTM Design</span><span class="strip-item hi">Brand Repositioning</span><span class="strip-item">Market Entry</span><span class="strip-item hi">Financial Modeling</span><span class="strip-item">Consumer Funnel Analysis</span><span class="strip-item hi">Portfolio Strategy</span><span class="strip-item">Competitive Intelligence</span>
+  </div>
+</div>
+
+<section id="projects">
+  <div class="s-label">Selected Work</div>
+  <div class="s-title">Projects across<br>India's biggest brands</div>
+  <p class="projects-hint">Click any card to read the full case study &mdash; context, what I built, and the outcome delivered.</p>
+  <div class="projects-grid reveal" id="projectsGrid"></div>
+</section>
+
+<div class="feature-strip">
+  <div>
+    <div class="s-label">My Approach</div>
+    <div class="feature-title">I don't just<br>diagnose &mdash; I<br><em>prescribe</em> and<br>execute.</div>
+  </div>
+  <div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="fi-num">01</div><div class="fi-text"><strong>Structured problem diagnosis first.</strong> I use frameworks like 5-Why, funnel analysis, and SWOT to find the root cause &mdash; not surface symptoms.</div></div>
+      <div class="feature-item"><div class="fi-num">02</div><div class="fi-text"><strong>Data-backed recommendations.</strong> Every strategy I build comes with a financial model, ROI projection, or KPI framework.</div></div>
+      <div class="feature-item"><div class="fi-num">03</div><div class="fi-text"><strong>Stakeholder alignment built in.</strong> I've achieved 95% alignment on growth initiatives by communicating clearly and anticipating resistance early.</div></div>
+      <div class="feature-item"><div class="fi-num">04</div><div class="fi-text"><strong>Execution-ready deliverables.</strong> From 90-day sprint plans to 5-year roadmaps &mdash; every recommendation comes with a playbook, not just a slide.</div></div>
+    </div>
+  </div>
+</div>
+
+<section id="experience">
+  <div class="s-label">Work Experience</div>
+  <div class="s-title">Where I've delivered results</div>
+  <div class="exp-list reveal">
+    <div class="exp-row">
+      <div><div class="exp-badge badge-edtech">EdTech</div><div class="exp-co">Hanbai Consultancy</div><div class="exp-role">CEO Office Intern</div><div class="exp-dates">Apr 2025 &ndash; Jun 2025</div></div>
+      <div>
+        <div class="exp-headline">Improved engagement by 40% and drove data-backed allocation decisions</div>
+        <ul class="exp-points">
+          <li>Structured audience segmentation across 900+ learner personas; redesigned content and messaging strategy to address declining engagement and unclear content investment ROI</li>
+          <li>Built ROI models and facilitated client workshops; conducted market and competitor analysis</li>
+          <li>Achieved 95% stakeholder alignment on go-forward growth initiatives</li>
         </ul>
-        <a href="mailto:sagar380208@gmail.com" class="nav-cta">Let's Talk</a>
-        <div class="mobile-menu-btn">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
+      </div>
+    </div>
+    <div class="exp-row">
+      <div><div class="exp-badge badge-re">Real Estate</div><div class="exp-co">TO-LET GLOBE</div><div class="exp-role">Business Strategy Intern (Team Lead)</div><div class="exp-dates">Mar 2025 &ndash; May 2025</div></div>
+      <div>
+        <div class="exp-headline">+105% brand reach &middot; +60% qualified leads &middot; 12 growth opportunities adopted</div>
+        <ul class="exp-points">
+          <li>Architected integrated growth strategy across digital channels addressing low brand visibility and inconsistent lead quality</li>
+          <li>Led 3-member team; implemented targeting logic and built performance dashboards</li>
+          <li>Identified 12 growth opportunities adopted by leadership through structured market research</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-row">
+      <div><div class="exp-badge badge-re">Real Estate</div><div class="exp-co">TO-LET GLOBE</div><div class="exp-role">Brand Strategy Intern</div><div class="exp-dates">Jan 2025 &ndash; Mar 2025</div></div>
+      <div>
+        <div class="exp-headline">Customer rating: 3.8 &rarr; 4.8 &middot; 98% brand consistency</div>
+        <ul class="exp-points">
+          <li>Analyzed customer feedback to identify root causes of weak brand perception; redesigned brand framework with KPI tracking</li>
+          <li>Achieved 98% brand consistency across all execution touchpoints</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-bg"></div>
-        <div class="hero-grid"></div>
-        <div class="hero-content">
-            <div class="hero-tag">
-                Available for opportunities
-            </div>
-            <h1>I help brands <span class="highlight">find their voice</span> and scale their impact.</h1>
-            <p class="hero-subtitle">
-                <strong>Brand Strategist & Growth Marketer</strong> fluent in both data and creativity. 
-                I transform consumer insights into compelling brand narratives that drive measurable business results.
-            </p>
-            <div class="metrics-bar">
-                <div class="metric">
-                    <div class="metric-value">105%</div>
-                    <div class="metric-label">Digital Reach Growth</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">60%</div>
-                    <div class="metric-label">Lead Quality Lift</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">40%</div>
-                    <div class="metric-label">Content Relevance</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">95%</div>
-                    <div class="metric-label">Stakeholder Alignment</div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            Scroll
-        </div>
-    </section>
+<section class="skills-section" id="about" style="padding:4rem 3rem;">
+  <div class="s-label">Capabilities</div>
+  <div class="skills-wrap reveal">
+    <div class="skill-col">
+      <div class="skill-col-title">Strategy &amp; Consulting</div>
+      <div class="skill-items">
+        <div class="skill-item">Problem Structuring</div><div class="skill-item">Growth Strategy</div><div class="skill-item">GTM Design</div><div class="skill-item">Market Entry</div><div class="skill-item">Portfolio Strategy</div><div class="skill-item">Competitive Analysis</div><div class="skill-item">Brand Management</div>
+      </div>
+    </div>
+    <div class="skill-col">
+      <div class="skill-col-title">Analytics &amp; Finance</div>
+      <div class="skill-items">
+        <div class="skill-item">Financial Modeling</div><div class="skill-item">P&amp;L Analysis</div><div class="skill-item">Consumer Funnel Analysis</div><div class="skill-item">ROI Modeling</div><div class="skill-item">Data Storytelling</div><div class="skill-item">Market Sizing (TAM/SAM/SOM)</div>
+      </div>
+    </div>
+    <div class="skill-col">
+      <div class="skill-col-title">Tools &amp; Platforms</div>
+      <div class="skill-items">
+        <div class="skill-item">Excel (Advanced)</div><div class="skill-item">PowerPoint</div><div class="skill-item">Tableau</div><div class="skill-item">Power BI</div><div class="skill-item">SQL</div><div class="skill-item">Python</div>
+      </div>
+    </div>
+    <div class="skill-col">
+      <div class="skill-col-title">Certifications</div>
+      <div class="skill-items">
+        <div class="skill-item">Google Data Analytics</div><div class="skill-item">Advanced Excel &mdash; Business</div><div class="skill-item">Leadership Skills &mdash; IIM Ahmedabad</div><div class="skill-item">Inbound Marketing &mdash; HubSpot</div><div class="skill-item">Data-Driven Decisions &mdash; PwC</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="section-header reveal">
-            <span class="section-tag">The Story</span>
-            <h2 class="section-title">Where Data Meets Creativity</h2>
-            <p class="section-subtitle">Most marketers speak either 'creative' or 'spreadsheet.' I'm fluent in both.</p>
-        </div>
-        
-        <div class="about-grid">
-            <div class="about-content reveal">
-                <p>
-                    My journey into marketing started with a simple observation: <strong>the best brands don't just sell products—they tell stories that move people to action.</strong> But storytelling without strategy is just entertainment. The magic happens when creative intuition meets rigorous analysis.
-                </p>
-                
-                <p class="highlight-text">
-                    "I don't just create messaging—I decode what makes audiences act, then build strategies that deliver results you can measure."
-                </p>
-                
-                <p>
-                    At <strong>Hanbai Consultancy</strong>, I developed brand positioning for IIMX—an EdTech platform for Indian management professionals. I analyzed 1,000+ consumer insights to ensure every word resonated. Result? <strong>40% improvement in content relevance</strong> and 95% C-suite alignment.
-                </p>
-                
-                <p>
-                    At <strong>TO-LET GLOBE</strong>, I led digital campaigns that <strong>grew brand reach by 105%</strong> while building dashboards tracking every rupee against ROI. When I redesigned the employer brand, Glassdoor ratings jumped from 3.8 to 4.8.
-                </p>
-                
-                <p>
-                    Now pursuing my PGDM at IMT Nagpur, I'm channeling this dual expertise into strategic consulting—helping legacy brands reconnect with new generations and startups find market fit.
-                </p>
-            </div>
-            
-            <div class="skills-grid reveal">
-                <div class="skill-card">
-                    <h4>The Strategist</h4>
-                    <ul>
-                        <li>Brand Positioning & Architecture</li>
-                        <li>Go-To-Market Strategy</li>
-                        <li>Consumer Insights & Segmentation</li>
-                        <li>Competitive Analysis</li>
-                        <li>Campaign Deconstruction</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <h4>The Analyst</h4>
-                    <ul>
-                        <li>Marketing Analytics & ROI</li>
-                        <li>SQL, Python, Tableau</li>
-                        <li>A/B Testing & Optimization</li>
-                        <li>Competitive Intelligence</li>
-                        <li>Customer Acquisition Metrics</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <h4>The Executor</h4>
-                    <ul>
-                        <li>Digital Campaign Management</li>
-                        <li>Content Strategy & Copywriting</li>
-                        <li>Social Media Marketing</li>
-                        <li>Influencer Partnerships</li>
-                        <li>Marketing Automation</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <h4>The Leader</h4>
-                    <ul>
-                        <li>C-Suite Presentations</li>
-                        <li>Cross-Functional Leadership</li>
-                        <li>Stakeholder Management</li>
-                        <li>Project Management</li>
-                        <li>6 Languages (English, Hindi +4)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+<section style="padding:4rem 3rem;">
+  <div class="s-label">Recognition</div>
+  <div class="awards-bar reveal">
+    <div class="award-item"><div class="aw-year">2024</div><div class="aw-name">STRATBUZZ &mdash; Winner</div><div class="aw-event">Business Strategy Competition &middot; IMT</div></div>
+    <div class="award-item"><div class="aw-year">2024</div><div class="aw-name">DRISTICONE &mdash; 2nd Runner-Up</div><div class="aw-event">Case Analysis Challenge</div></div>
+    <div class="award-item"><div class="aw-year">2015</div><div class="aw-name">Anondoram Borooah Award</div><div class="aw-event">Academic Excellence &middot; Top among 3.89 lakh students</div></div>
+  </div>
+</section>
 
-    <!-- Work Section -->
-    <section id="work">
-        <div class="section-header reveal">
-            <span class="section-tag">Selected Work</span>
-            <h2 class="section-title">Strategic Case Studies</h2>
-            <p class="section-subtitle">Brand transformation, campaign analysis, competitive intelligence, and market entry strategies.</p>
-        </div>
-        
-        <div class="case-studies">
-            <!-- Case Study 1: BATA -->
-            <div class="case-study reveal">
-                <div class="case-study-info">
-                    <div class="case-study-number">CASE STUDY 01</div>
-                    <h3>Transforming a Legacy Brand for Gen Z</h3>
-                    <p class="case-study-brand">BATA India — Strategic Brand Repositioning</p>
-                    
-                    <div class="case-study-tags">
-                        <span class="case-study-tag">Brand Strategy</span>
-                        <span class="case-study-tag">Youth Marketing</span>
-                        <span class="case-study-tag">Sustainability</span>
-                        <span class="case-study-tag">Digital Transformation</span>
-                    </div>
-                    
-                    <p class="case-study-desc">
-                        BATA India—#1 organized footwear retailer with ₹34.96B revenue—faced a critical perception problem. 
-                        Despite market leadership, the brand was seen as "my parents' shoe brand" by Gen Z consumers, 
-                        limiting growth in the high-margin youth sneaker segment.
-                    </p>
-                    
-                    <div class="case-study-metrics">
-                        <div class="case-metric">
-                            <div class="case-metric-value">+15%</div>
-                            <div class="case-metric-label">Brand Consideration (16-30)</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">20%</div>
-                            <div class="case-metric-label">D2C Revenue Target</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">+8pts</div>
-                            <div class="case-metric-label">Store Conversion</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">25%</div>
-                            <div class="case-metric-label">ECHO Line Revenue Share</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="case-study-details">
-                    <div class="case-detail-section">
-                        <h4>The Challenge</h4>
-                        <ul>
-                            <li><strong>Youth Relevance Gap:</strong> Perceived as utilitarian, not aspirational</li>
-                            <li><strong>Global Competition:</strong> Nike & Adidas controlling sneaker culture</li>
-                            <li><strong>Digital Discovery Gap:</strong> Weak presence on TikTok/Reels where trends start</li>
-                            <li><strong>Experience Gap:</strong> Transactional retail lacking shareable moments</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="case-detail-section">
-                        <h4>Strategic Approach</h4>
-                        <p>
-                            Identified the "Affordable Cool" whitespace—stylish, sustainable everyday sneakers under ₹4,000. 
-                            Developed a 4-pillar transformation: <strong>BATA ECHO</strong> product line (sustainable materials), 
-                            <strong>Digital-First Marketing</strong> (500+ micro-influencers), <strong>Phygital Retail</strong> (AR try-on mirrors), 
-                            and <strong>Sustainability Leadership</strong> (carbon-neutral by 2027).
-                        </p>
-                    </div>
-                    
-                    <div class="case-detail-section">
-                        <h4>The Repositioning</h4>
-                        <p><em>"Everyday style, responsibly made."</em></p>
-                        <p>Positioned BATA at the intersection of accessibility, style, and sustainability—differentiating from premium global players and cheap fast-fashion alternatives.</p>
-                    </div>
-                    
-                    <div class="case-insight">
-                        <p><strong>Key Insight:</strong> Legacy brands don't need to abandon heritage to win new generations—they need to <em>reframe heritage as authenticity</em>. BATA's 125+ years isn't a liability; it's proof of trustworthy craftsmanship.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Case Study 2: CeraVe Campaign Deconstruction -->
-            <div class="case-study reveal">
-                <div class="case-study-info">
-                    <div class="case-study-number">CASE STUDY 02</div>
-                    <h3>Deconstructing a $7M Viral Bet</h3>
-                    <p class="case-study-brand">CeraVe × Michael Cera — Strategic Campaign Analysis</p>
-                    
-                    <div class="case-study-tags">
-                        <span class="case-study-tag">Campaign Analysis</span>
-                        <span class="case-study-tag">Viral Marketing</span>
-                        <span class="case-study-tag">Behavioral Economics</span>
-                        <span class="case-study-tag">Risk Assessment</span>
-                    </div>
-                    
-                    <p class="case-study-desc">
-                        CeraVe's Super Bowl conspiracy campaign generated 32B impressions—but did viral theater 
-                        build lasting brand equity? I deconstructed the strategy, execution mechanics, and 
-                        identified 5 critical missed opportunities that separated awareness from conversion.
-                    </p>
-                    
-                    <div class="case-study-metrics">
-                        <div class="case-metric">
-                            <div class="case-metric-value">32B</div>
-                            <div class="case-metric-label">Total Impressions</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">-98%</div>
-                            <div class="case-metric-label">Cost Per Impression vs Avg</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">+25%</div>
-                            <div class="case-metric-label">Sales Lift (Super Bowl Week)</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">450+</div>
-                            <div class="case-metric-label">Influencers Activated</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="case-study-details">
-                    <div class="case-detail-section">
-                        <h4>The Strategic Tension</h4>
-                        <p>
-                            CeraVe held "dermatologist-recommended" authority but faced commoditization—300+ competitors 
-                            using identical claims. To Gen Z (30% of market), "clinical" signaled <strong>"boring and parent-approved."</strong>
-                            The bet: weaponize absurdity to defend science without abandoning it.
-                        </p>
-                    </div>
-                    
-                    <div class="case-detail-section">
-                        <h4>Behavioral Mechanics Decoded</h4>
-                        <ul>
-                            <li><strong>Pattern Interruption:</strong> Lo-fi "paparazzi" shots hijacked novelty detection—signaling "truth" vs. "marketing"</li>
-                            <li><strong>In-Group Effect:</strong> Reddit/TikTok theories created "insider club" where sharing = status signal</li>
-                            <li><strong>Zeigarnik Effect:</strong> Unresolved tension ("Is Michael Cera the founder?") kept brand in working memory for 21 days</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="case-detail-section">
-                        <h4>The Critical Assessment</h4>
-                        <p>
-                            <strong>The Fatal Flaw:</strong> Consumers remember "Michael Cera is funny" more than "CeraVe has ceramides." 
-                            Search data showed interest focused on celebrity, not solution. I identified 5 missed opportunities: 
-                            no educational bridge content, no Phase 2 continuity, no CRM capture from 32B impressions, and retail 
-                            failed to mirror the digital moment.
-                        </p>
-                    </div>
-                    
-                    <div class="case-insight">
-                        <p><strong>Key Insight:</strong> Viral campaigns are tactics, not strategies. 32B impressions without a conversion mechanism 
-                        is expensive theater. I design the business objectives campaigns serve—ensuring alignment with P&L goals, not just social metrics.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Case Study 3: Vadilal vs Amul Brand Audit -->
-            <div class="case-study reveal">
-                <div class="case-study-info">
-                    <div class="case-study-number">CASE STUDY 03</div>
-                    <h3>Challenger vs. Leader: Ice Cream Wars</h3>
-                    <p class="case-study-brand">Vadilal vs Amul — Competitive Brand Audit</p>
-                    
-                    <div class="case-study-tags">
-                        <span class="case-study-tag">Competitive Intelligence</span>
-                        <span class="case-study-tag">SWOT Analysis</span>
-                        <span class="case-study-tag">FMCG Strategy</span>
-                        <span class="case-study-tag">Growth Roadmap</span>
-                    </div>
-                    
-                    <p class="case-study-desc">
-                        India's ₹300B ice cream market is a tale of two strategies: Amul's cooperative-powered volume play 
-                        vs. Vadilal's premium niche defense. I conducted a comprehensive brand audit analyzing positioning, 
-                        portfolio architecture, and distribution to identify Vadilal's path to +150bps market share.
-                    </p>
-                    
-                    <div class="case-study-metrics">
-                        <div class="case-metric">
-                            <div class="case-metric-value">₹300B</div>
-                            <div class="case-metric-label">Market Size (2024)</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">13.5%</div>
-                            <div class="case-metric-label">CAGR (2025-30)</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">2.5x</div>
-                            <div class="case-metric-label">Market Share Gap (Amul vs Vadilal)</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">+150bps</div>
-                            <div class="case-metric-label">Target Share Gain</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="case-study-details">
-                    <div class="case-detail-section">
-                        <h4>The Strategic Question</h4>
-                        <p>
-                            How can Vadilal (20% share, regional challenger) compete against Amul (45% share, pan-India leader) 
-                            without engaging in a destructive price war? The answer lies in understanding that 
-                            <strong>the market supports a bifurcated structure</strong>—volume leadership vs. premium niche.
-                        </p>
-                    </div>
-                    
-                    <div class="case-detail-section">
-                        <h4>Comparative Analysis</h4>
-                        <ul>
-                            <li><strong>Amul:</strong> "Real Milk. Real Ice Cream." — Cooperative model (3.6M farmers), mass value positioning, pan-India cold chain, ₹10 entry price</li>
-                            <li><strong>Vadilal:</strong> "Authentic taste of Indian celebration" — Heritage brand (est. 1907), premium positioning, West/North stronghold, ₹20 entry price</li>
-                            <li><strong>Key Battleground:</strong> Tier-2/3 cities & Modern Trade aisles where premiumization is accelerating</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="case-detail-section">
-                        <h4>6-Point Growth Roadmap for Vadilal</h4>
-                        <p>
-                            <strong>1. Premiumize Portfolio:</strong> Launch 'Signature' gourmet line (Rasmalai Ripple, Royal festive packs)<br>
-                            <strong>2. Health-Forward:</strong> Scale sugar-free/keto range for Gen Z<br>
-                            <strong>3. Distribution Scale:</strong> Deploy 5,000+ asset-light freezers in Tier-2/3<br>
-                            <strong>4. De-seasonalization:</strong> Push gifting & in-home occasions to reduce summer dependency (65% of sales)<br>
-                            <strong>5. Q-Commerce:</strong> Win "Impulse at Home" via Blinkit/Zepto partnerships<br>
-                            <strong>6. Operational Excellence:</strong> AI-driven demand forecasting to reduce peak-season stockouts
-                        </p>
-                    </div>
-                    
-                    <div class="case-insight">
-                        <p><strong>Key Insight:</strong> Vadilal's "Right to Win" isn't volume—it's <em>premium indulgence</em> and <em>home consumption</em>. 
-                        Success requires pivoting from a direct volume war to a margin-rich, heritage-led niche strategy. Own the celebration, not the commodity.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Case Study 4: General Mills -->
-            <div class="case-study reveal">
-                <div class="case-study-info">
-                    <div class="case-study-number">CASE STUDY 04</div>
-                    <h3>Launching America's #1 Cereal in India</h3>
-                    <p class="case-study-brand">General Mills — Go-To-Market Strategy</p>
-                    
-                    <div class="case-study-tags">
-                        <span class="case-study-tag">GTM Strategy</span>
-                        <span class="case-study-tag">FMCG Launch</span>
-                        <span class="case-study-tag">Consumer Research</span>
-                        <span class="case-study-tag">Pricing Strategy</span>
-                    </div>
-                    
-                    <p class="case-study-desc">
-                        India's breakfast cereal market is valued at ₹38,720 Crores with 8.2% CAGR. Yet 25% of urban Indians 
-                        skip breakfast entirely due to time constraints. Mission: Launch Honey Nut Cheerios as the solution 
-                        to India's "morning rush" crisis.
-                    </p>
-                    
-                    <div class="case-study-metrics">
-                        <div class="case-metric">
-                            <div class="case-metric-value">₹130 Cr</div>
-                            <div class="case-metric-label">Year 3 Revenue Target</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">18%</div>
-                            <div class="case-metric-label">Year 3 EBITDA</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">8</div>
-                            <div class="case-metric-label">Tier-1 Metro Launch Cities</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">Month 16</div>
-                            <div class="case-metric-label">Break-Even Target</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="case-study-details">
-                    <div class="case-detail-section">
-                        <h4>Consumer Crisis Identified</h4>
-                        <ul>
-                            <li><strong>Time Poverty:</strong> Dual-income households have &lt;15 mins for morning prep</li>
-                            <li><strong>Cooking Fatigue:</strong> Traditional breakfasts (parathas, idlis) are labor-intensive</li>
-                            <li><strong>Picky Eaters:</strong> Parents struggle to find nutritious options kids will eat</li>
-                            <li><strong>72%</strong> have nutritionally inadequate morning meals</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="case-detail-section">
-                        <h4>GTM Strategy</h4>
-                        <p>
-                            <strong>Value Prop:</strong> "Kid-Approved Taste, Ready in 60 Seconds, with Whole Grain Nutrition parents trust."<br><br>
-                            <strong>Pricing:</strong> Laddered approach from ₹10 trial sachets → ₹449 family packs<br><br>
-                            <strong>Distribution:</strong> E-commerce + Modern Trade + Quick Commerce (Blinkit, Zepto)<br><br>
-                            <strong>Marketing:</strong> 60% digital (influencer seeding, mom creators) / 40% retail activations
-                        </p>
-                    </div>
-                    
-                    <div class="case-detail-section">
-                        <h4>Competitive Positioning</h4>
-                        <p>
-                            Identified whitespace in "Premium & Healthy" quadrant—bridging <strong>kid appeal (taste)</strong> 
-                            with <strong>parent approval (heart health)</strong>. No competitor owned this space.
-                        </p>
-                    </div>
-                    
-                    <div class="case-insight">
-                        <p><strong>Key Insight:</strong> In FMCG, the product isn't the hero—<em>the consumer problem is</em>. Cheerios' heart-health benefits matter less than solving "what do I feed my kids in 60 seconds that won't make me feel guilty?"</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="cta-section">
+  <div class="s-label">Let's work together</div>
+  <div class="cta-big">Ready to<br><em>grow</em> together?</div>
+  <p class="cta-sub">Open to full-time roles in strategy, brand management, consulting, and marketing analytics.</p>
+  <div class="cta-row">
+    <a href="mailto:sagar380208@gmail.com" class="cta-a cta-white">sagar380208@gmail.com</a>
+    <a href="https://www.linkedin.com/in/sagar0sharma/" class="cta-a cta-outline" target="_blank">LinkedIn</a>
+    <a href="tel:+917725941004" class="cta-a cta-outline">+91 77259 41004</a>
+  </div>
+</div>
 
-    <!-- Experience Section -->
-    <section id="experience">
-        <div class="section-header reveal">
-            <span class="section-tag">Background</span>
-            <h2 class="section-title">Experience & Education</h2>
-        </div>
-        
-        <div class="timeline reveal">
-            <div class="timeline-item">
-                <div class="timeline-date">Jan 2025 — Mar 2025</div>
-                <h3>Brand Strategy Intern</h3>
-                <p class="timeline-company">Hanbai Consultancy LLP • EdTech</p>
-                <ul>
-                    <li>Developed brand positioning strategy for IIMX platform improving content relevance <strong>40%</strong></li>
-                    <li>Conducted competitive analysis across <strong>15 EdTech platforms</strong> informing pricing and positioning</li>
-                    <li>Created brand messaging framework achieving <strong>95% stakeholder alignment</strong></li>
-                    <li>Analyzed consumer insights from <strong>1000+ managers</strong> shaping communication strategy</li>
-                    <li>Presented brand recommendations to C-suite influencing positioning decisions</li>
-                </ul>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-date">Jun 2024 — Aug 2024</div>
-                <h3>Digital Marketing Intern, Team Lead</h3>
-                <p class="timeline-company">TO-LET GLOBE • Real Estate</p>
-                <ul>
-                    <li>Executed digital campaigns increasing brand reach <strong>105%</strong> across multiple channels</li>
-                    <li>Led consumer segmentation improving lead quality <strong>60%</strong> through targeted messaging</li>
-                    <li>Designed marketing dashboard tracking campaign ROI and customer acquisition metrics</li>
-                    <li>Analyzed <strong>5000 touchpoints</strong> optimizing customer journey effectiveness</li>
-                </ul>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-date">Mar 2024 — May 2024</div>
-                <h3>Marketing Intern</h3>
-                <p class="timeline-company">TO-LET GLOBE • Real Estate</p>
-                <ul>
-                    <li>Improved employer brand raising Glassdoor rating from <strong>3.8 to 4.8</strong></li>
-                    <li>Conducted market research gathering insights from <strong>200+ stakeholders</strong></li>
-                    <li>Created marketing collateral for internal branding campaigns</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="edu-cert-grid reveal">
-            <div class="edu-card">
-                <h4>Education</h4>
-                <div style="margin-bottom: 1.5rem;">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 0.3rem;">PGDM, Marketing</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 0.3rem;">Institute of Management Technology, Nagpur</p>
-                    <p style="color: var(--text-dark); font-size: 0.85rem;">Expected 2026 • CGPA: 6.84/10</p>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
-                        <em>Coursework: Brand Management, Consumer Behavior, Marketing Strategy, Digital Marketing, Marketing Research</em>
-                    </p>
-                </div>
-                <div>
-                    <h3 style="font-size: 1.1rem; margin-bottom: 0.3rem;">B.Com</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 0.3rem;">SS Jain Subodh College, Jaipur</p>
-                    <p style="color: var(--text-dark); font-size: 0.85rem;">2021 • 65%</p>
-                </div>
-            </div>
-            
-            <div class="cert-card">
-                <h4>Certifications & Recognition</h4>
-                <ul class="cert-list">
-                    <li>
-                        Google Digital Marketing & E-commerce Certificate
-                        <span class="cert-org">Google • 2025</span>
-                    </li>
-                    <li>
-                        Leadership Skills and Team Management
-                        <span class="cert-org">IIM Ahmedabad via Coursera • 2024</span>
-                    </li>
-                    <li>
-                        Data Driven Decision Making
-                        <span class="cert-org">PwC • 2024</span>
-                    </li>
-                    <li>
-                        🏆 <strong>Winner</strong> — STRATBUZZ Business Strategy Competition
-                        <span class="cert-org">Outperformed 30+ teams</span>
-                    </li>
-                    <li>
-                        🥉 <strong>2nd Runner Up</strong> — DRISTICONE Case Analysis Challenge
-                        <span class="cert-org">Competed against 50+ teams</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
+<footer>
+  <span class="f-logo">Sagar Sharma</span>
+  <div class="f-links">
+    <a href="https://www.linkedin.com/in/sagar0sharma/" target="_blank">LinkedIn</a>
+    <a href="mailto:sagar380208@gmail.com">Email</a>
+    <a href="tel:+917725941004">Phone</a>
+  </div>
+  <span class="f-copy">&copy; 2025 &middot; PGDM Marketing &amp; Strategy &middot; IMT Nagpur</span>
+</footer>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="contact-content reveal">
-            <span class="section-tag">Get In Touch</span>
-            <h2 class="section-title">Let's Build Something Together</h2>
-            <p class="contact-subtitle">
-                Whether you're a legacy brand looking to reconnect with younger audiences, 
-                a startup seeking growth strategy, or a consulting firm needing a strategist 
-                who speaks both data and creativity—I'd love to hear from you.
-            </p>
-            
-            <div class="contact-links">
-                <a href="mailto:sagar380208@gmail.com" class="contact-link">
-                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    sagar380208@gmail.com
-                </a>
-                <a href="tel:+917725941004" class="contact-link">
-                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                    +91-7725941004
-                </a>
-                <a href="https://linkedin.com/in/sagar0sharma" target="_blank" class="contact-link">
-                    <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
-                    LinkedIn
-                </a>
-            </div>
-            
-            <a href="mailto:sagar380208@gmail.com?subject=Let's%20Work%20Together" class="contact-cta">
-                Start a Conversation
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-        </div>
-    </section>
+<script>
+var PROJECTS = [
+  {
+    num:"01 / Growth Strategy",
+    name:"Asian Paints — Home Care 360",
+    desc:"Category expansion strategy transforming Asian Paints from a product company into an integrated home services platform targeting the ₹5.1T–₹8.5T home services market.",
+    tags:[["Service Platform","blue"],["AMC Model","neutral"],["40% Lower Cost","green"]],
+    color:"#2b5be0",
+    ctx:["Core business saturating — diversification failing",
+         "Asian Paints faced market share erosion from 59% to 52%, EBITDA decline of 365 bps, and 85% revenue concentration in a single category with 7–10 year repaint cycles. Existing diversification attempts (Beautiful Homes, Sleek Kitchens) had failed due to fragmented execution and poor service standardization.",
+         ["Rising competition from Birla Opus and JSW creating pricing pressure on core paints category",
+          "Consumer pain points: opaque pricing, inconsistent execution, zero post-service accountability across 70K+ dealer touchpoints",
+          "No integrated home-services platform existed in the ₹5.1T–₹8.5T Indian home services market"]],
+    act:["Built 'Home Care 360' — a full-stack integrated service platform with a recurring revenue model",
+         "Reframed Asian Paints from product seller to home solutions partner:",
+         ["Full-stack ecosystem: painting, waterproofing, deep cleaning, pest control, and minor repairs under one trusted platform",
+          "Tiered service model (Essential / Premium / Luxury) targeting mass, urban middle-class, and affluent segments simultaneously",
+          "AMC subscription model shifting from one-time 7-year purchase cycles to 3–4 annual engagements per household",
+          "Leveraged existing 70K+ dealers, 143 warehouses, and 90K+ outlets to achieve ~40% cost advantage vs standalone service players",
+          "R&D synergies extended into cleaning chemicals and pest control at minimal capex (₹50–75 Cr)"]],
+    out:["A defensible platform moat competitors cannot replicate without matching brand equity",
+         [["Revenue Market","blue"],["40% Lower Cost","green"],["3–4x Annual Touchpoints","gold"]],
+         "Repositioned Asian Paints from 'Home Beautification' to 'Home Care & Maintenance'. The AMC model creates predictable annuity revenue, higher LTV, and increased share of wallet. Full GTM blueprint with pricing architecture and 3-year P&L projection delivered."]
+  },
+  {
+    num:"02 / GTM Strategy",
+    name:"Zepto — Enterprise GTM Playbook",
+    desc:"Company-wide strategic roadmap anchored to ₹11,110 Cr FY25 revenue, covering Tier-2/3 expansion, Café vertical, Private Label scale-up, and 90-day EBITDA sprint plan.",
+    tags:[["₹11,110 Cr Base","blue"],["150% YoY Growth","green"],["Multi-vertical","neutral"]],
+    color:"#1a6b4a",
+    ctx:["Hypergrowth stalling at the EBITDA wall",
+         "Zepto scaled to ₹11,110 Cr revenue at 150% YoY growth but operated at a -28% net loss margin in FY24. Tier-1 market saturation was approaching, dark store unit economics were under pressure, and no coherent path to profitability existed across the business.",
+         ["Core q-commerce margins squeezed: delivery cost ₹35–45/order against low average order values",
+          "Zepto Café generating traffic but lacking a structured P&L, scale blueprint, or margin model",
+          "Tier-2/3 cities with 600M+ consumers entirely untapped by the existing dark store infrastructure"]],
+    act:["Designed a five-stream monetization architecture with a full Q1–Q4 execution roadmap",
+         "Built Zepto's next chapter across five simultaneous growth levers:",
+         ["Micro-Market Scoring Framework for Tier-2/3 site selection: income density heatmaps, 1.5–2km SLA radius optimization, hyperlocal OOH + WhatsApp geo-blasts 2 weeks pre-launch targeting 1,000+ orders/day/store",
+          "Zepto Café: QSR vertical on sunk logistics infrastructure — 100 cafés/month rollout velocity, ₹160 Cr current GMV, targeting ₹1,000 Cr ARR",
+          "Private Label '20-20-20 Formula': 20% below indexed brands, +20% gross margin uplift, 20 hero SKUs at launch across Staples, Beverages, and Personal Care",
+          "Zepto Atoms: B2B Data SaaS monetizing pin-code level purchase data for FMCG brands at ~70% gross margin with 100+ paying brand target",
+          "90-day EBITDA sprint: SKU rationalization (delist bottom 10%), dynamic fee engine for orders below ₹200, route batching to compress fulfillment cost"]],
+    out:["Full execution roadmap targeting EBITDA positivity and CAC payback ≤45 days by Q4",
+         [["GOV ₹11,110 Cr","blue"],["CAC Payback ≤45 Days","green"],["Private Label 8%→15%","gold"]],
+         "North Star metrics dashboard: contribution margin +400 bps vs FY24, D30 retention 65%, Zepto Pass penetration 32%. The five-stream model transforms Zepto from a delivery app into a commerce operating system where each vertical leverages sunk infrastructure for near-zero marginal expansion."]
+  },
+  {
+    num:"03 / Brand Architecture",
+    name:"Bikaji — House of Brands",
+    desc:"₹27,000 Cr revenue diversification strategy diagnosing 70% concentration risk and building a 3-year multi-brand architecture across sweets, western snacks, and ethnic snacks.",
+    tags:[["₹27,000 Cr Target","blue"],["56% Revenue Growth","green"],["+160 bps Margin","neutral"]],
+    color:"#b45309",
+    ctx:["The Heritage Brand Trap — one category, one brand, one existential risk",
+         "Bikaji built its empire on bhujia and namkeen but 70%+ revenue concentration in ethnic snacks created structural vulnerability. The brand faced a 'category permission barrier': consumers would not accept Bikaji in sweets or western snacks because its equity was too narrowly defined. Marketing spend of ₹430 Cr was 75% reinforcing the very concentration they needed to escape.",
+         ["Benchmarking vs Haldiram's revealed structural disadvantage in brand perception, shelf dominance, and category leadership across sweets and chips",
+          "Western snacks growing at 8–10% CAGR but Bikaji capturing only 4–5% due to weak sub-brand identity and low innovation cadence",
+          "₹5,000 Cr packaged sweets opportunity blocked by shelf misplacement, festive demand dependency, and confused brand messaging"]],
+    act:["Transitioned from mono-brand to a House of Brands architecture with a ₹545 Cr investment plan",
+         "Built a 3-year roadmap anchored in geographic segmentation and sub-brand launches:",
+         ["Segmented Core (Rajasthan, Bihar, Assam) vs Focus (UP, Delhi, Karnataka) markets — Focus states offer 1.5x growth potential with malleable brand perception",
+          "Designed distinct sub-brands for sweets and western snacks to prevent equity dilution and enable category-specific messaging",
+          "POS restructuring across 50K outlets: aisle separation, dedicated sub-brand shelf blocks, impulse placement for western snacks",
+          "Q-commerce scale-up as premium discovery and trial channel for new sub-brands in urban Focus markets",
+          "Benchmarked Unilever, Nestlé, and ITC multi-brand strategies to validate execution feasibility"]],
+    out:["56% revenue growth and margin expansion by Year 3",
+         [["Target ₹27,000 Cr","blue"],["56% Revenue Growth","green"],["+160 bps Margin","gold"]],
+         "Full financial model with ₹545 Cr phased investment plan. Strategy reduces single-category revenue dependence from 70% to under 45% by Year 3. Each sub-brand has its own SAM sizing, channel mix, and launch timeline backed by a competitive intelligence framework."]
+  },
+  {
+    num:"04 / Turnaround",
+    name:"VIP Bags — Project R-30",
+    desc:"Zone turnaround strategy for Rajasthan, recovering from a ₹12.42 Cr net loss to ₹9.2 Cr EBITDA by FY27 via SKU reset, Gold Dealer Program, and the VIP On-Call service moat.",
+    tags:[["+600 bps Margin","blue"],["24%→31% Share","green"],["Project R-30","neutral"]],
+    color:"#993c1d",
+    ctx:["A bleeding zone with structural product-market mismatch and accelerating dealer attrition",
+         "VIP Bags Rajasthan Zone posted a ₹12.42 Cr net loss in Q3 FY25. Root cause analysis revealed an accelerating preference shift from fabric to polycarbonate luggage that the zone's SKU mix hadn't tracked. Safari had captured 30% market share at 16.5% YoY growth while poaching VIP's dealer network through superior margin offers.",
+         ["3 underserved high-value segments identified: destination weddings (4.8M/year), domestic luxury tourists (+15% growth), Kota student migrants (~120K annually)",
+          "72 dealer accounts at risk of switching to Safari/Skybags — competitor offering better margins with no equivalent service guarantee",
+          "34-day average warranty resolution TAT vs 7-day industry benchmark — destroying the premium price justification entirely"]],
+    act:["Three simultaneous fronts: SKU reset, Gold Dealer Program, and VIP On-Call service moat",
+         "Project R-30 was a 30-month zone recovery strategy built on three parallel interventions:",
+         ["'70-30 Rule' SKU reset: 70% hard-shell, 20% Carlton premium, 10% Aristocrat utility — projecting +600 bps gross margin expansion (42%→48%)",
+          "30-day flash clearance of non-moving soft luggage via Van Melas in Tier-2 towns (Pali, Barmer) — targeting ₹15 Cr liquidation to free working capital for 2026 polycarbonate SKU line",
+          "Gold Dealer Program: top 25 high-velocity counters in Jaipur, Jodhpur, Udaipur with Priority Stocking + 2% Kicker incentive requiring 60% shelf dominance",
+          "Institutional sales: direct tie-ups with Rajasthan's top 10 wedding planners for bulk trousseau orders at ATV ₹18,000, bypassing retail entirely",
+          "'VIP On-Call' service moat: 4-hour repair turnaround and 24-hour replacement guarantee — a 15% price premium justifier Safari (Mumbai HQ) structurally cannot match"]],
+    out:["Zone EBITDA flip from ₹4.2 Cr to ₹9.2 Cr by FY27",
+         [["24%→31% Market Share","green"],["+600 bps Margin","blue"],["₹9.2 Cr EBITDA FY27","gold"]],
+         "Revenue growth target: +12% YoY. Inventory Days: 47→32 (-32%). Governance protocol includes weekly geo-tagged dealer shelf audits, monthly SKU velocity dashboards, and real-time WhatsApp bot analytics tracking the 4-hour SLA at every node."]
+  },
+  {
+    num:"05 / Repositioning",
+    name:"Bata — Youth-Centric Transformation",
+    desc:"Strategic repositioning from legacy utility footwear to accessible style + sustainability, anchored by BATA ECHO — a Gen Z sub-brand with phygital retail and creator-first marketing.",
+    tags:[["Gen Z Strategy","blue"],["20% D2C Mix","green"],["Sub-brand Design","neutral"]],
+    color:"#534ab7",
+    ctx:["Strong legacy brand invisible to the next generation of footwear buyers",
+         "Bata had strong aided recall among 35+ consumers but near-zero Gen Z consideration. Online search share of voice was dominated by Nike, Adidas, and Puma. The 'affordable + durable' positioning carried no aspiration — perceived as 'my dad's brand' by 18–24 year olds in metro surveys.",
+         ["Less than 8% purchase consideration among 18–24 age group — a generational equity gap with no plan to close it",
+          "'Affordable Cool' segment (<₹4,000) combining style and sustainability was a confirmed white space with no strong incumbent",
+          "Gen Z: $250B spending power driven 58% by influencer discovery — Bata had no creator strategy or platform-native content presence"]],
+    act:["Dual-layer repositioning: parent brand refresh + BATA ECHO sub-brand for Gen Z",
+         "Built a strategy operating on two simultaneous levels to avoid alienating the existing base:",
+         ["Parent brand repositioned as 'Everyday style, responsibly made' — integrating sustainability (recycled PET, bamboo fiber, bio-foam) into the core narrative",
+          "BATA ECHO sub-brand: retro-modern Gen Z sneaker line at ₹60–90 range with AR try-ons, digital product passports, and app-based customization",
+          "Always-on Creator Engine: 500+ micro-influencers/month, UGC-led Reels, campus ambassador program across 50 universities",
+          "Phygital retail transformation: AR mirrors, smart shelves, shoppable live drops, Discord community for Gen Z retention loop",
+          "Social commerce model: influencer-direct purchase links, exclusive colorway drops, community-first engagement mechanics"]],
+    out:["New growth vector without cannibalizing existing channels",
+         [["+15% Brand Consideration","green"],["20% D2C Mix Target","blue"],["ECHO: 25% Revenue in 24M","gold"]],
+         "Projected +8% store conversion improvement via phygital experience integration. BATA ECHO forecasted to contribute 25% of revenue within 24–36 months. The repositioning keeps Bata's core identity intact while building cultural currency with the segment defining the next decade of Indian footwear spend."]
+  },
+  {
+    num:"06 / Revenue Growth",
+    name:"Mondelez Bournvita — ₹500 Cr Turnaround",
+    desc:"3-lever growth strategy addressing trust erosion and repeat purchase decline after the viral sugar controversy — with a ₹65 Cr investment and 14-month payback.",
+    tags:[["₹500 Cr Unlock","blue"],["+300 bps Margin","green"],["14-Month Payback","neutral"]],
+    color:"#3b6d11",
+    ctx:["Trust collapse — brand stuck between health and taste with no credible anchor in either",
+         "Bournvita faced a defining crisis: a viral video exposing high sugar content led to NCPCR scrutiny, forced label changes, and an 18% decline in repeat purchase rates among the 25–40 urban mother segment. Funnel analysis confirmed awareness at 90%+ but consideration and repeat purchase in critical decline.",
+         ["5-Why root cause: brand positioned as 'health' couldn't defend 6.4g/serving sugar against a health-conscious generation",
+          "78% of consumers willing to pay for healthier options — Bournvita's formulation was failing the test",
+          "Adult consumption occasion (working professionals, fitness users, 40+ wellness) — a ₹1,200 Cr SAM entirely unaddressed by any Bournvita SKU"]],
+    act:["Three-lever turnaround: portfolio reformulation + adult expansion + trust-led GTM",
+         "Designed a strategy separating short-term trust repair from medium-term revenue unlocking:",
+         ["Lever 1 — Portfolio Reformulation: 'Bournvita Naturals' (clean label, 30% less sugar), 'Bournvita Pro' (high protein, adult segment), 'Bournvita Focus' (students, cognitive benefits)",
+          "Lever 2 — Adult Segment Expansion: targeted via e-commerce (45%), pharma channels (30%), and modern trade (25%) — three channels chosen for distinct trust and discovery roles",
+          "Lever 3 — Trust-led GTM: QR-based ingredient transparency, third-party certifications, nutritionist + influencer validation, gym and corporate sampling program",
+          "Risk framework: phased sugar reduction to avoid taste rejection, PR + influencer response playbook for competitor counter-moves, regulatory compliance roadmap"]],
+    out:["₹500 Cr revenue unlock with 14-month payback on a ₹65 Cr investment",
+         [["₹500 Cr Revenue Unlock","blue"],["+300 bps Margin","green"],["14-Month Payback","gold"]],
+         "Adult segment expansion alone accounts for ₹180 Cr of the ₹500 Cr target. Full model with 3-scenario sensitivity analysis. Impact metrics: +15% brand trust, +20% PDP conversion, +10% repeat rate. Strategy transforms Bournvita from a controversially positioned malt drink into a credible, science-backed nutrition brand."]
+  },
+  {
+    num:"07 / Market Entry",
+    name:"General Mills — Cheerios India GTM",
+    desc:"Go-to-market strategy for Honey Nut Cheerios India launch in the ₹38,720 Cr breakfast market via a 3-phase phased rollout with laddered ₹10–₹499 pricing.",
+    tags:[["₹38K Cr Market","blue"],["8.2% CAGR","green"],["3-Phase GTM","neutral"]],
+    color:"#185fa5",
+    ctx:["A global icon entering a habit-driven, price-sensitive, underpenetrated breakfast market",
+         "India's breakfast cereal market was ₹38,720 Cr growing at 8.2% CAGR — but 68% of urban consumers preferred hot breakfast by deep habit, 25% skipped breakfast entirely for time reasons, and 72% had nutritionally poor starts. Cheerios had zero India brand recall.",
+         ["Ready-to-Eat cereal holds 74% of the market but Kellogg's dominates — no whole grain oat cereal with strong identity in the ₹100–300 price band",
+          "Core behavioral insight: 25% breakfast skipping + 72% poor nutrition = a Convenience + Health gap that defines the entry opportunity",
+          "Risk: premium pricing alienates mass market; low pricing destroys global brand equity — required precise price-ladder architecture"]],
+    act:["3-phase phased rollout sequencing investment and learning across 36 months",
+         "Designed a market entry strategy that minimizes commitment before learning at each phase:",
+         ["Phase 1 (0–6M): Metro modern trade seeding — Amazon, Flipkart, Zepto, Reliance Smart, Nature's Basket with ₹499 family pack as anchor SKU",
+          "Phase 2 (12–24M): Tier-2 expansion with ₹199 value pack, school sampling to overcome taste barriers, quick commerce bundle mechanics",
+          "Phase 3 (24–36M): General Trade (kirana) push with ₹10 trial sachets and school nutrition program partnerships to drive household penetration",
+          "Cheerios repositioned not as a cereal but as 'ready in 60 seconds, whole grain' — a functional framing that sidesteps the hot breakfast habit",
+          "Year 1 KPIs: 4–7% e-commerce conversion, 100+ key accounts, metro dominance before regional spread"]],
+    out:["A sequenced, low-risk market entry with built-in optionality at every phase",
+         [["₹38,720 Cr Market","blue"],["8.2% CAGR Tailwind","green"],["₹10→₹499 Price Ladder","gold"]],
+         "The 3-phase structure lets General Mills test and learn before committing full distribution investment. Full GTM document with retailer pitch deck, distributor economics model, and Year 1 media plan delivered."]
+  },
+  {
+    num:"08 / Growth Strategy",
+    name:"Nestlé Maggi — ₹1,200 Cr Growth Plan",
+    desc:"Regional flavor expansion (15 SKUs), premium health portfolio, and omnichannel GTM with 2.8x ROI for India's most iconic instant noodle brand facing retention decline.",
+    tags:[["₹1,200 Cr Target","blue"],["2.8x ROI","green"],["Q-Commerce Pilot","neutral"]],
+    color:"#0c447c",
+    ctx:["Retention declining in a post-crisis brand facing taste fatigue and regional irrelevance",
+         "Maggi had rebuilt market share post 2015 but repeat purchase frequency was declining — 68% to 28% retention in the urban 25–35 segment. Root cause: taste fatigue from homogenous SKU range and weak regional relevance. Yippee offered 11 regional variants; Maggi had 3. Q-commerce was growing 3x faster than traditional trade with no Maggi strategy for it.",
+         ["Competitive benchmarking vs Yippee, Top Ramen, and Ching's Secret revealed regionalization gap as the most critical vulnerability",
+          "Premium health instant noodles (growing 25% YoY) entirely absent from Maggi's current portfolio — a category being built without them",
+          "Urban 25–35 segment showing 22% decline in weekly frequency vs 2019 baseline — the retention crisis quantified and attributed"]],
+    act:["Three simultaneous vectors: regional relevance, premiumization, and channel diversification",
+         "Designed a strategy addressing retention, premium, and channel together, not sequentially:",
+         ["15 new regional SKUs co-developed via regional taste labs: Kolhapuri Masala, Chettinad, Machher Jhol, and 12 others for authentic South and East India relevance",
+          "Maggi Fit premium range: high protein, low sodium at 35% price premium targeting the urban health-conscious segment being captured by competitors",
+          "Q-commerce pilot: 10-min delivery-exclusive flavors as a product innovation and discovery mechanism — turning the channel into a launch platform",
+          "CRM-driven retention: WhatsApp-based re-order reminders and subscription model for high-frequency buyers",
+          "Maggi Moments UGC campaign leveraging nostalgia equity while introducing new flavors to lapsed users across social platforms"]],
+    out:["₹1,200 Cr revenue with 2.8x ROI and 14-month break-even",
+         [["₹1,200 Cr Target","blue"],["2.8x ROI","green"],["14-Month Break-Even","gold"]],
+         "Regional flavor strategy alone projects ₹420 Cr by recovering lapsed regional buyers at 40% lower acquisition cost than new-user campaigns. Full P&L model with 3-scenario sensitivity analysis across optimistic, base, and conservative cases."]
+  },
+  {
+    num:"09 / Campaign Deconstruction",
+    name:"CeraVe — Super Bowl Virality Audit",
+    desc:"Reverse-engineered CeraVe's 32B impression Super Bowl campaign to identify structural conversion gaps and design a post-viral growth system.",
+    tags:[["32B Impressions","blue"],["Behavioral Economics","neutral"],["Post-Viral System","green"]],
+    color:"#3c3489",
+    ctx:["Viral fame without a conversion engine — awareness spike with no equity capture",
+         "CeraVe's Super Bowl campaign generated 32 billion impressions — one of the most successful earned media moments in recent FMCG history. But the campaign lacked infrastructure to convert awareness into owned audience, repeat purchase, or long-term brand equity. No CRM capture, no retargeting funnel, and no product education sequence existed around the viral moment.",
+         ["Pattern interruption worked: the Michael CeraVe celebrity-name confusion created a viral loop that drove compulsive organic sharing",
+          "Skincare community in-group dynamics amplified authenticity — but the brand failed to capture community membership or build a retention mechanic",
+          "Retail integration absent: shelves were understocked during the peak awareness window, losing the trial conversion opportunity the campaign created"]],
+    act:["Reverse-engineered the 3-phase virality architecture and designed a post-viral growth system",
+         "Deconstructed seeding, amplification, and resolution phases using behavioral economics frameworks:",
+         ["Phase 1 Seeding: mapped how 'pattern interruption' was engineered — celebrity name confusion created double-take and compulsive organic sharing behavior",
+          "Phase 2 Amplification: identified how skincare community in-group dynamics turned confusion into advocacy — and how a branded hashtag could have owned that conversation",
+          "Post-viral CRM capture: email/SMS opt-in triggers at peak virality, retargeting sequences for 14/30/60-day re-engagement windows designed but never deployed",
+          "Product education sequencing: dermatologist-led content funnel to move consumers from awareness to purchase decision within 4 weeks of the viral peak",
+          "Retail surge protocol: inventory trigger system + in-store activation linked to real-time online virality signals"]],
+    out:["A replicable post-viral conversion playbook for any FMCG brand",
+         [["32B Impressions","blue"],["3 Conversion Gaps ID'd","green"],["CRM + Retail System","gold"]],
+         "The audit identified three structural conversion gaps: no CRM capture at peak virality, no product education sequence, and zero retail integration during the awareness window. The post-viral growth system converts one-time awareness spikes into sustained revenue and owned audience — transferable to any FMCG viral moment."]
+  },
+  {
+    num:"10 / Portfolio Strategy",
+    name:"Dabur — Ayurveda as Performance Wellness",
+    desc:"Portfolio-led growth strategy repositioning Dabur's Ayurveda for Gen Z and millennials via a 3-tier category architecture and a 12-month innovation pipeline.",
+    tags:[["Performance Wellness","blue"],["3-Tier Architecture","neutral"],["+15% Premium Mix","green"]],
+    color:"#854f0b",
+    ctx:["Heritage wellness brand invisible to the generation spending most on wellness",
+         "Dabur held strong Ayurvedic equity but faced a generational perception gap: Gen Z and millennials viewed it as their grandparents' brand. The wellness category was exploding (gummies, adaptogens, RTD beverages) but Dabur's portfolio was built for a different consumer and a different era of purchase behavior.",
+         ["Functional gummies growing at 35%+ CAGR — Dabur absent despite having superior ingredient supply chain advantages over every competitor",
+          "Himalaya and Mamaearth capturing the science-backed natural positioning while Dabur remained anchored in traditional messaging",
+          "3.5M urban household acquisition needed for next revenue tier — current brand perception limiting penetration to the existing older demographic"]],
+    act:["Repositioned Ayurveda as 'science-backed performance wellness' with a 3-tier architecture",
+         "Built a portfolio architecture simultaneously defending the core and unlocking high-growth adjacencies:",
+         ["Core tier: defend traditional SKUs with clinical validation — shift from 'ancient wisdom' to 'clinically proven Ayurveda' across all packaging and communication",
+          "Premium tier: functional gummies, adaptogen blends, RTD beverages at 40–60% price premium targeting urban professionals and fitness users",
+          "D2C Lab tier: rapid innovation pipeline with 90-day concept-to-launch cycles for PMF validation before full scale",
+          "12-month innovation pipeline: ashwagandha sleep gummies, immunity chews, wheatgrass shots — all using Dabur's existing ingredient supply chain",
+          "Multi-channel GTM: D2C flagship for innovation, Q-commerce for impulse categories, modern trade for premium tier scale"]],
+    out:["A brand architecture that grows without an identity crisis",
+         [["+15% Premium Mix","green"],["3.5M Urban HH Target","blue"],["D2C Lab Engine","gold"]],
+         "The 3-tier architecture serves three distinct consumer occasions without cannibalization: daily wellness ritual (Core), performance optimization (Premium), and experimental wellness (D2C Lab). Proof-based retail experiences and influencer seeding shift perception from traditional to clinically credible."]
+  },
+  {
+    num:"11 / Market Entry",
+    name:"EssilorLuxottica — Tier 2/3 Expansion",
+    desc:"Asset-light cluster-based expansion strategy for EssilorLuxottica targeting Tier 2/3 cities via authorized partners, regional distributors, and micro-warehousing.",
+    tags:[["95% Fill Rate","blue"],["48–72 Hr TAT","green"],["Asset-Light Model","neutral"]],
+    color:"#0f6e56",
+    ctx:["Premium optics brand with no distribution strategy below Tier 1",
+         "EssilorLuxottica had strong brand equity and product superiority in premium eyewear but lacked infrastructure to reach Tier 2/3 cities with 400M+ consumers and rapidly growing vision care awareness. The challenge: replicate Tier 1 service quality and fill rates in markets without distribution density, without capital-intensive owned retail expansion.",
+         ["Low lens attach rate in distributed retail: consumers buying frames without premium lens upgrades — destroying the core margin model",
+          "Inconsistent fill rate and long TAT in non-metro markets destroying the premium experience and retailer trust",
+          "No retailer incentive framework to drive premium lens recommendation over lower-margin alternatives at point of sale"]],
+    act:["3-layer asset-light channel architecture with a 90-day activation playbook",
+         "Built a cluster-based expansion that scales without owned retail infrastructure:",
+         ["3-layer channel: authorized partners (flagship experience anchor) + regional distributors (fill rate backbone) + micro-warehousing (48–72 hour TAT delivery)",
+          "Frame-lens bundling strategy: drove lens attach rate above 65% via structured retailer margin incentives (35–40%) making premium lens the default recommendation",
+          "Eye camp activation: mobile vision screening in Tier 2/3 towns to generate qualified leads — demand creation at zero incremental distribution cost",
+          "Geo-targeted social ads driving qualified trial traffic to nearest authorized partner for digital demand capture",
+          "90-day playbook: Week 1–4 distributor onboarding, Week 5–8 retail activation, Week 9–12 sell-out acceleration via eye camps and performance marketing"]],
+    out:["Store productivity and distributor ROI benchmarks set for scalable expansion",
+         [["95% Fill Rate Target","blue"],["Lens Attach >65%","green"],["Distributor ROI ≥18%","gold"]],
+         "KPI framework: store productivity ₹3.8L/month, distributor ROI ≥18%, inventory health ≥12 turns/year. The asset-light model reaches 10x the number of Tier 2/3 markets at the same capital as a single owned store. TAT reduced from 7–10 days to 48–72 hours as the new standard."]
+  },
+  {
+    num:"12 / Social Strategy",
+    name:"Nivea Men — 90-Day Instagram Playbook",
+    desc:"Creator-led community growth strategy to close Nivea Men's engagement gap vs Beardo with a structured Creator OS and a phased pilot-scale-optimize roadmap.",
+    tags:[["+50% Engagement","blue"],["2x Reel Views","green"],["Creator OS","neutral"]],
+    color:"#185fa5",
+    ctx:["Mass awareness brand losing the engagement war to a D2C-native competitor on every platform metric",
+         "Nivea Men had strong ATL presence and high aided awareness but was being outpaced by Beardo — a D2C-native brand with a fraction of Nivea's budget but dramatically higher engagement and community loyalty. Root cause: Beardo ran creator-first while Nivea Men ran repurposed TVC content on a platform that rewards authenticity and native format.",
+         ["Beardo's creator velocity: 3x more content pieces per week at higher organic reach — revealed through systematic competitive benchmarking",
+          "Nivea Men content mix: 80% brand-produced vs Beardo's 80% creator-produced — exact inverse of what Instagram's algorithm rewards",
+          "Content designed for TV failing on Reels format: low completion rates, poor hook structure, no community mechanics to drive engagement loops"]],
+    act:["Built a Creator Operating Model as the foundation for phased scale",
+         "Redesigned Nivea Men's Instagram presence from the ground up with creator infrastructure at the center:",
+         ["Creator tier model: 5 macro creators (brand authority), 20 micro creators (community trust), 100+ UGC creators (reach + authenticity) — each with a distinct brief and incentive",
+          "Reels-first content strategy: 70% UGC, 20% collaborations, 10% brand content — inverting the existing mix to match algorithmic reward structure",
+          "Engagement loops: 'Your Morning Routine' UGC challenge, live grooming sessions, exclusive product drop previews for follower community",
+          "Phase 1 (0–30D): Pilot — test 5 creator archetypes, identify top performers by engagement rate not follower count",
+          "Phase 2 (31–60D): Scale — 10x content volume with winning archetypes, activate UGC challenge with hashtag mechanic",
+          "Phase 3 (61–90D): Optimize — A/B test hook formats, refine creator briefs, measure community retention"]],
+    out:["+50% engagement and 2x average Reel views within 90 days",
+         [["+50% Engagement","green"],["2x Reel Views","blue"],["100+ UGC Creators","gold"]],
+         "The Creator OS gives Nivea Men a scalable content production system that doesn't require a proportional budget increase: 100 UGC creators produce more authentic content at lower cost than 5 agency-produced campaigns. The 90-day playbook is a replicable template for any Nivea category needing digital acceleration."]
+  },
+  {
+    num:"13 / Market Entry",
+    name:"Dettol — Oral Care Category Entry",
+    desc:"Market entry strategy for Dettol into India's oral care category, identifying a ₹300 Cr revenue opportunity via a dentist-first, chemist-anchored GTM.",
+    tags:[["₹300 Cr Opportunity","blue"],["50% Gross Margin","green"],["Dentist-First GTM","neutral"]],
+    color:"#0f6e56",
+    ctx:["Trusted health brand with zero presence in a high-growth, low-penetration segment",
+         "Dettol's germ protection trust equity was unmatched in India but entirely absent from oral care — a segment growing above category average with mouthwash penetration under 8% vs 35%+ in developed markets. TAM/SAM/SOM analysis identified a ₹300 Cr revenue opportunity in a segment Listerine was leaving wide open.",
+         ["Primary adoption barrier: burning sensation from alcohol-based Listerine formulas and consumer safety concerns around daily use",
+          "Competitive gap identified: high efficacy + low irritation = a positioning space that Dettol's clinical trust equity is uniquely qualified to fill",
+          "Chemist-first purchase behavior in oral care — a channel Dettol already owned, requiring zero new channel infrastructure investment"]],
+    act:["Consumer-led product design with a dentist-first GTM and 3-year phased rollout",
+         "Built a go-to-market strategy anchored in removing the #1 adoption barrier:",
+         ["Product portfolio: alcohol-free CPC + Zinc formula addressing burning sensation and safety — positioned as 'clinical efficacy, gentle formula'",
+          "Dentist advocacy program: 1,000+ dentist seeding in Phase 1 to build clinical credibility before mass advertising investment",
+          "Chemist-first channel strategy: pharmacy channels (30%) as credibility anchor before modern trade and e-commerce scale",
+          "Sampling campaign: trial sachets at dental clinics and corporate health camps to overcome the first-use barrier at zero-risk trial",
+          "3-year rollout: metros → top 30 cities → national scale with channel prioritization at each phase transition"]],
+    out:["₹275 Cr revenue projection with 50% gross margin and 28.5% ROI",
+         [["₹275 Cr Revenue (3-Year)","blue"],["50% Gross Margin","green"],["ROI 28.5% / 21M Payback","gold"]],
+         "The dentist-first strategy builds clinical credibility that mass advertising cannot buy — and leverages Dettol's existing trust equity to enter a new category without diluting the core brand. Full 3-year P&L with channel investment breakdown and sensitivity analysis across three pricing scenarios."]
+  },
+  {
+    num:"14 / Competitive Strategy",
+    name:"Vadilal vs Amul — Strategic Audit",
+    desc:"Comprehensive brand and portfolio audit of Vadilal against Amul in India's ₹300B ice cream market, with a 12–18 month growth roadmap targeting +150 bps market share.",
+    tags:[["+150 bps Share","blue"],["Q-Commerce Play","green"],["Premiumization","neutral"]],
+    color:"#63380a",
+    ctx:["Strong regional brand losing ground to a national distribution juggernaut",
+         "Vadilal held ~20% market share in a ₹300B ice cream market dominated by Amul at ~45%. The gap wasn't product quality — Vadilal's range (150+ SKUs, 25+ categories) was extensive. The structural gap: Amul's pan-India distribution, freezer penetration in kiranas, and brand recall in modern trade created a moat incremental investment alone couldn't close.",
+         ["Vadilal's premium segment underrepresented despite strong consumer nostalgia — a high-margin opportunity going untapped",
+          "Q-commerce (10-min delivery) growing 3x faster than traditional retail — Vadilal had no Q-commerce strategy or SKU optimization for it",
+          "Amul's freezer deployment strategy locking up kirana counter space — Vadilal needed an asset-light counter-play to compete"]],
+    act:["3-lever growth roadmap targeting distribution gaps, premiumization, and Q-commerce dominance",
+         "Designed a 12–18 month strategic roadmap with three simultaneous levers:",
+         ["Premiumization: shift portfolio mix toward high-margin premium and health-focused SKUs (low-sugar, fruit-forward) at 25–35% price premium to improve blended GM",
+          "Q-commerce offensive: SKU optimization for 10-min delivery format, geo-targeted performance marketing in high-density urban delivery zones",
+          "Tier-2/3 distribution: asset-light freezer deployment program + rural distributor incentive structure to close Amul's network advantage without matching capex",
+          "Consumer trend capture: nostalgia + indulgence positioning for take-home premium segment; impulse positioning for single-serve in Q-commerce",
+          "Portfolio GM analysis: identify and exit low-margin, low-velocity SKUs consuming freezer space needed for premium growth SKUs"]],
+    out:["+150 bps market share through digital-first and distribution expansion",
+         [["+150 bps Share Target","green"],["Premium Mix Expansion","blue"],["Q-Commerce Dominance","gold"]],
+         "The 12-month roadmap prioritizes Q-commerce as Vadilal's fastest path to urban market share growth — it's the one channel where Amul's legacy freezer network is irrelevant and Vadilal's agility is a structural advantage. Full strategic audit with pricing, product, and channel recommendations delivered."]
+  },
+  {
+    num:"15 / Market Expansion",
+    name:"Motul India — 5-Year Growth Strategy",
+    desc:"5-year strategic expansion plan for Motul India targeting ₹1,800–2,500 Cr revenue at 18–22% CAGR via specialist positioning in premium synthetics and EV fluids.",
+    tags:[["₹2,500 Cr Target","blue"],["18–22% CAGR","green"],["EV + Premium","neutral"]],
+    color:"#1a3a5c",
+    ctx:["Premium lubricant brand blocked from mass-market entry by structural distribution moats",
+         "Motul operated in India's $7B+ lubricants market but faced structural barriers preventing scale: OEM lock-ins favoring volume players, price wars in mass-market segments, and deep distribution moats built by incumbents like Castrol and Gulf Oil. Motul's premium positioning was its strength but also a ceiling without a clear growth architecture.",
+         ["Distribution moats: incumbent players had 50,000+ outlet coverage vs Motul's selective premium channel presence",
+          "OEM lock-in risk: vehicle manufacturers tied to volume lubricant partners creating structural exclusion from the largest volume segments",
+          "EV transition accelerating: traditional engine oil demand structurally declining — requiring a forward-looking EV fluid strategy before competitors built the category"]],
+    act:["Designed a 'specialist positioning' 5-pillar growth roadmap with ₹350 Cr CAPEX allocation",
+         "Built a 5-year plan that leveraged Motul's premium equity rather than competing on volume:",
+         ["Specialist positioning: focused on premium synthetics, EV thermal fluids, and high-performance 2W segments where Motul's R&D advantage is defensible",
+          "Rural hub-spoke expansion: asset-light distribution reach into Tier 2/3 markets via authorized distributors without direct retail investment",
+          "D2C digital ecosystem: content-led acquisition funnel targeting performance enthusiasts, subscription model for repeat purchase, CRM-driven retention",
+          "EV product innovation: thermal management fluids, battery coolants, and e-drive lubricants — positioned as the premium EV fluid specialist before the category is contested",
+          "Financial model: scenario-based projections with CAPEX allocation (~₹350 Cr), profitability expansion strategy, and risk mitigation for pricing pressure and counterfeits"]],
+    out:["₹1,800–2,500 Cr revenue target with 18–22% CAGR",
+         [["₹2,500 Cr Revenue Target","blue"],["18–22% CAGR","green"],["EV Fluids Pioneer","gold"]],
+         "The specialist positioning strategy makes Motul the category definer in EV fluids — a segment where incumbents have no legacy advantage. Risk mitigation framework covers pricing pressure from Chinese lubricant imports, supply chain volatility, and counterfeit penetration in Tier 2/3 markets. Full scenario-based financial model with CAPEX allocation and 5-year P&L delivered."]
+  },
+  {
+    num:"16 / Innovation",
+    name:"Bournvita Crunch, Knorr Umami Boost & Glucon-D Fizz Stix",
+    desc:"Social listening-led occasion expansion unlocking ₹3,740 Cr combined SAM across three FMCG brands trapped in single-occasion consumption loops.",
+    tags:[["Social Listening","blue"],["₹3,740 Cr SAM","green"],["3 Sub-brands","neutral"]],
+    color:"#533489",
+    ctx:["Three brands missing documented consumer behavior hiding in plain sight",
+         "Bournvita (84% consumption in 7–9AM), Knorr (73% consumed as standalone soup), and Glucon-D (90% of sales in March–June) were each locked in single-occasion definitions. Reddit threads, Google search queries, and social listening revealed consumers already using these products in unapproved ways — the brands weren't watching and weren't monetizing it.",
+         ["Bournvita: Reddit/Twitter evidence of consumers eating powder raw and using it as ice cream topping — 'Dessert Condiment' SAM ₹650–₹1,200 Cr (8–12% of ₹8,100–₹9,900 Cr at-home ice cream market)",
+          "Knorr: positioned as 'winter soup' but latent demand for everyday seasoning documented — SAM ₹1,890 Cr in seasoning enhancers market, 4x larger than the stagnant soup market",
+          "Glucon-D: kids licking powder for 'fizzy sherbet sensation' documented on Reddit (512 upvotes, 103 comments) — confectionery format in ₹9,000–11,000 Cr sugar confectionery TAM, 4.5x the energy powder market"]],
+    act:["Three launch-ready sub-brand concepts built from behavioral signals with full 5-risk guardrails each",
+         "Used social listening and consumer interview validation to move from behavioral insight to concept:",
+         ["'Bournvita Crunch': table-top shaker bottle (PET, dual-lid aperture) shifting from Health Food to Dessert/Freezer aisle — priced at ₹0.79/g vs ₹0.4–0.5/g for refill jars; UGC-led 'How do you crunch?' Reels and 1L vanilla brick bundle as trial activations",
+          "'Knorr Umami Boost': flavor-first seasoning sachet (3–4g, no thickeners) for Spice Aisle at ₹5/sachet — cross-merch clip-strips in Noodle and Rice aisles + direct B2B to street food vendors and canteens at parity with Maggi Masala-e-Magic",
+          "'Glucon-D Fizz Stix': sealed moisture-proof straw sachets (Pixie Stick format) in 3 flavors (Lemon Zing, Orange Rush, Cola-Lime) — ₹2/stick at school canteen checkout and kirana candy jars; zero R&D cost (same formula, new format)",
+          "5-risk guardrail framework for each: brand equity dilution, cannibalization, regulatory compliance (FSSAI), product integrity, and retailer economics"]],
+    out:["₹3,740 Cr combined SAM with zero parent brand cannibalization",
+         [["₹1,890 Cr SAM — Knorr","blue"],["₹1,200 Cr SAM — Bournvita","green"],["₹650 Cr SAM — Glucon-D","gold"]],
+         "All three sub-brands use distinct positioning, aisle placement, and packaging to avoid cannibalizing the parent brand's core occasion. Each uses the parent's existing ingredients and supply chain — making the marginal cost of launch exceptionally low. Innovation briefs with SAM sizing, consumer insight, concept positioning, and prototype-to-launch timeline delivered for each brand."]
+  }
+];
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2025 Sagar Sharma. Crafted with strategy & intention.</p>
-        <p class="quote">"The best marketing doesn't feel like marketing." — Tom Fishburne</p>
-    </footer>
+function bg(color) {
+  return '<svg width="100%" height="100%" viewBox="0 0 800 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">'
+    +'<rect width="800" height="190" fill="'+color+'"/>'
+    +'<circle cx="660" cy="15" r="140" fill="rgba(255,255,255,0.055)"/>'
+    +'<circle cx="60" cy="180" r="110" fill="rgba(255,255,255,0.04)"/>'
+    +'<path d="M0 85 Q200 45 400 85 Q600 125 800 85" stroke="rgba(255,255,255,0.09)" stroke-width="1.5" fill="none"/>'
+    +'<path d="M0 105 Q200 65 400 105 Q600 145 800 105" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none"/>'
+    +'<rect x="0" y="155" width="800" height="1" fill="rgba(255,255,255,0.07)"/>'
+    +'</svg>';
+}
 
-    <script>
-        // Custom cursor
-        const cursor = document.querySelector('.cursor');
-        const cursorDot = document.querySelector('.cursor-dot');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
-        });
+function tag(t) { return '<span class="proj-tag '+t[1]+'">'+t[0]+'</span>'; }
+function pill(p) {
+  var cls = p[1]==='gold' ? 'pill-gold' : p[1]==='green' ? 'pill-green' : 'pill-blue';
+  return '<span class="pill '+cls+'">'+p[0]+'</span>';
+}
+function li(b) { return '<li>'+b+'</li>'; }
 
-        // Cursor hover effect on links
-        document.querySelectorAll('a, button').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                cursor.style.borderColor = 'var(--accent-light)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-                cursor.style.borderColor = 'var(--accent)';
-            });
-        });
+function buildGrid() {
+  var g = document.getElementById('projectsGrid');
+  var h = '';
+  PROJECTS.forEach(function(p, i) {
+    h += '<div class="project-card" id="c'+i+'" onclick="toggle('+i+')" role="button" aria-expanded="false" tabindex="0">'
+      +'<div class="proj-num">'+p.num+'</div>'
+      +'<div class="proj-name">'+p.name+'</div>'
+      +'<div class="proj-desc">'+p.desc+'</div>'
+      +'<div class="proj-tags">'+p.tags.map(tag).join('')+'</div>'
+      +'<span class="card-indicator">[ view case ]</span>'
+      +'</div>';
+    if ((i+1)%3===0 || i===PROJECTS.length-1) {
+      h += '<div class="project-detail" id="p'+Math.floor(i/3)+'"></div>';
+    }
+  });
+  g.innerHTML = h;
+}
 
-        // Scroll reveal animation
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const revealOnScroll = () => {
-            revealElements.forEach(el => {
-                const elementTop = el.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
-                    el.classList.add('active');
-                }
-            });
-        };
+var active = null;
 
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Initial check
+function toggle(i) {
+  var grp = Math.floor(i/3);
+  var panel = document.getElementById('p'+grp);
+  var card = document.getElementById('c'+i);
 
-        // Smooth scroll for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+  if (active===i) {
+    card.classList.remove('active');
+    card.setAttribute('aria-expanded','false');
+    panel.classList.remove('open');
+    panel.innerHTML='';
+    active=null;
+    return;
+  }
 
-        // Navbar background on scroll
-        const nav = document.querySelector('nav');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(5,5,5,0.95)';
-            } else {
-                nav.style.background = 'rgba(5,5,5,0.8)';
-            }
-        });
+  if (active!==null) {
+    var pc=document.getElementById('c'+active);
+    if(pc){pc.classList.remove('active');pc.setAttribute('aria-expanded','false');}
+    var pg=Math.floor(active/3);
+    if(pg!==grp){var pp=document.getElementById('p'+pg);if(pp){pp.classList.remove('open');pp.innerHTML='';}}
+  }
 
-        // Parallax effect for hero background
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const heroBg = document.querySelector('.hero-bg');
-            if (heroBg) {
-                heroBg.style.transform = `translateY(${scrolled * 0.3}px)`;
-            }
-        });
+  active=i;
+  card.classList.add('active');
+  card.setAttribute('aria-expanded','true');
 
-        // Counter animation for metrics
-        const animateCounters = () => {
-            const counters = document.querySelectorAll('.metric-value, .case-metric-value');
-            
-            counters.forEach(counter => {
-                const target = counter.innerText;
-                const hasPercent = target.includes('%');
-                const hasPlus = target.includes('+');
-                const hasPts = target.includes('pts');
-                const hasCr = target.includes('Cr');
-                const hasMonth = target.includes('Month');
-                
-                if (hasMonth) return; // Skip "Month 16" type values
-                
-                let numValue = parseFloat(target.replace(/[^0-9.]/g, ''));
-                if (isNaN(numValue)) return;
-                
-                let current = 0;
-                const increment = numValue / 50;
-                const duration = 1500;
-                const stepTime = duration / 50;
-                
-                const updateCounter = () => {
-                    current += increment;
-                    if (current < numValue) {
-                        let displayValue = Math.ceil(current);
-                        if (hasPlus) displayValue = '+' + displayValue;
-                        if (hasPercent) displayValue += '%';
-                        if (hasPts) displayValue += 'pts';
-                        if (hasCr) displayValue = '₹' + displayValue + ' Cr';
-                        counter.innerText = displayValue;
-                        setTimeout(updateCounter, stepTime);
-                    } else {
-                        counter.innerText = target;
-                    }
-                };
-                
-                // Only animate when in view
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            updateCounter();
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.5 });
-                
-                observer.observe(counter);
-            });
-        };
+  var p=PROJECTS[i];
+  panel.innerHTML=
+    '<div class="detail-banner">'
+      +'<div class="detail-banner-bg">'+bg(p.color)+'</div>'
+      +'<div class="detail-banner-content">'
+        +'<div class="detail-banner-num">'+p.num+'</div>'
+        +'<div class="detail-banner-title">'+p.name+'</div>'
+        +'<div class="detail-banner-sub">'+p.desc+'</div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="detail-cols">'
+      +'<div class="detail-col col-ctx">'
+        +'<div class="col-head"><span class="col-dot"></span>Context</div>'
+        +'<div class="col-headline">'+p.ctx[0]+'</div>'
+        +'<div class="col-body">'+p.ctx[1]+'<ul>'+p.ctx[2].map(li).join('')+'</ul></div>'
+      +'</div>'
+      +'<div class="detail-col col-act">'
+        +'<div class="col-head"><span class="col-dot"></span>Action</div>'
+        +'<div class="col-headline">'+p.act[0]+'</div>'
+        +'<div class="col-body">'+p.act[1]+'<ul>'+p.act[2].map(li).join('')+'</ul></div>'
+      +'</div>'
+      +'<div class="detail-col col-out">'
+        +'<div class="col-head"><span class="col-dot"></span>Outcome</div>'
+        +'<div class="col-headline">'+p.out[0]+'</div>'
+        +'<div class="col-body"><div class="out-pills">'+p.out[1].map(pill).join('')+'</div>'+p.out[2]+'</div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="detail-footer"><button class="btn-collapse" onclick="toggle('+i+')">&#x2191; Collapse case study</button></div>';
 
-        animateCounters();
-    </script>
+  panel.classList.add('open');
+  setTimeout(function(){panel.scrollIntoView({behavior:'smooth',block:'nearest'});},60);
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&document.activeElement.classList.contains('project-card'))document.activeElement.click();
+});
+
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+
+buildGrid();
+</script>
 </body>
 </html>
